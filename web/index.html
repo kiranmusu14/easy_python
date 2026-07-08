@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Python Revision Workspace</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- reading-progress bar -->
+  <div id="progress-bar" aria-hidden="true"></div>
+
+  <div id="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" aria-label="Course navigation">
+      <div class="sidebar-head">
+        <div class="brand">
+          <span class="brand-mark">&lt;/&gt;</span>
+          <span class="brand-text">Python Revision</span>
+        </div>
+        <div class="global-progress" id="global-progress" title="Topics completed">0 / 0</div>
+      </div>
+      <div class="search-wrap">
+        <input id="search" type="search" placeholder="Search topics…  ( / )" autocomplete="off" />
+      </div>
+      <nav id="nav" class="nav"></nav>
+      <div class="sidebar-foot">
+        <span class="hint"><kbd>[</kbd> toggle &nbsp; <kbd>j</kbd>/<kbd>k</kbd> next/prev &nbsp; <kbd>/</kbd> search</span>
+      </div>
+    </aside>
+
+    <!-- Main column -->
+    <div id="main-col">
+      <header id="topbar">
+        <button id="sidebar-toggle" class="icon-btn" title="Toggle sidebar ([)" aria-label="Toggle sidebar">☰</button>
+        <nav class="breadcrumb" id="breadcrumb" aria-label="Breadcrumb"></nav>
+        <div class="topbar-right">
+          <div class="ring-wrap" id="ring-wrap" title="Quiz completion for this topic">
+            <svg viewBox="0 0 44 44" width="44" height="44" class="ring">
+              <circle class="ring-track" cx="22" cy="22" r="18" />
+              <circle class="ring-fill" id="ring-fill" cx="22" cy="22" r="18" />
+            </svg>
+            <span class="ring-label" id="ring-label">0%</span>
+          </div>
+          <button id="theme-toggle" class="icon-btn" title="Toggle light / dark theme" aria-label="Toggle theme">◐</button>
+        </div>
+      </header>
+
+      <main id="content" tabindex="-1"></main>
+    </div>
+  </div>
+
+  <!-- toast host -->
+  <div id="toast" role="status" aria-live="polite"></div>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

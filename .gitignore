@@ -1,0 +1,16 @@
+# Secrets — never commit real keys
+.env
+**/.env
+.env.local
+**/.env.local
+
+# Python tooling
+.tools/
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+
+# Original slide PDFs (kept locally, not in repo)
+*.pdf
