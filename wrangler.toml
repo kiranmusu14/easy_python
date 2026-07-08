@@ -1,0 +1,12 @@
+# Cloudflare Pages configuration.
+#
+# Static assets are served from web/. The functions/ directory at the repo
+# root is compiled automatically into Pages Functions (functions/api/ask.js
+# -> /api/ask), so no extra routing config is needed.
+#
+# Deploy from the CLI with:   npx wrangler pages deploy
+# (or connect this GitHub repo in the Cloudflare Pages dashboard).
+
+name = "easy-python"
+pages_build_output_dir = "web"
+compatibility_date = "2024-11-01"

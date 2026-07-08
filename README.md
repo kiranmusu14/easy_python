@@ -53,16 +53,43 @@ from the project root) and put `GROQ_API_KEY=...` in a root `.env`
 
 ## Deploy
 
-- **Static bundle:** deploy `web/` to any static host (Vercel, Netlify,
-  Cloudflare Pages, GitHub Pages). No backend or database required.
-- **AI function:** `api/ask.js` deploys as one serverless/edge endpoint at
-  `/api/ask`. It uses only the Web Fetch API, so it runs unmodified on
-  Vercel Edge, Cloudflare Workers, Netlify Edge, and Deno Deploy.
-- **Secret:** set `GROQ_API_KEY` as a **platform secret** (never in a
-  shipped file). Optionally `GROQ_MODEL` (default `llama-3.3-70b-versatile`).
+The frontend works fully with the AI function switched off; only the
+"Ask a Doubt" card degrades to an inline notice. Set `GROQ_API_KEY` as a
+**platform secret** (never in a shipped file); optionally `GROQ_MODEL`
+(default `llama-3.3-70b-versatile`).
 
-The frontend works fully with the function switched off; only the
-"Ask a Doubt" card degrades to an inline notice.
+### Cloudflare Pages (recommended here)
+
+This repo is preconfigured for Cloudflare Pages:
+
+- Static site is served from `web/`.
+- `functions/api/ask.js` is the Pages Function → route `/api/ask` (it just
+  reuses the shared handler in `api/ask.js`).
+- `wrangler.toml` sets `pages_build_output_dir = "web"`.
+
+**Option A — Dashboard (Git, auto-deploys on push):**
+1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to
+   Git**, pick `kiranmusu14/easy_python`.
+2. Build settings: **Framework preset = None**, **Build command = (empty)**,
+   **Build output directory = `web`**. Save & deploy.
+3. **Settings → Environment variables → add secret `GROQ_API_KEY`** (and
+   optionally `GROQ_MODEL`). Redeploy so the function picks it up.
+
+**Option B — CLI (Wrangler):**
+```bash
+npx wrangler login
+npx wrangler pages project create easy-python   # first time only
+npx wrangler pages secret put GROQ_API_KEY       # paste the key when prompted
+npx wrangler pages deploy                        # uses wrangler.toml (web/ + functions/)
+```
+
+### Other hosts
+
+- **Vercel:** deploy the repo; `api/ask.js` already carries
+  `export const config = { runtime: "edge" }`. Set the static root to `web/`
+  and add `GROQ_API_KEY` in project env vars.
+- **Netlify / Deno Deploy:** the same `api/ask.js` runs unmodified (Web
+  Fetch API only).
 
 ## Keyboard shortcuts
 
