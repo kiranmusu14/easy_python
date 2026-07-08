@@ -58,30 +58,29 @@ The frontend works fully with the AI function switched off; only the
 **platform secret** (never in a shipped file); optionally `GROQ_MODEL`
 (default `llama-3.3-70b-versatile`).
 
-### Cloudflare Pages (recommended here)
+### Cloudflare Workers (this repo's setup)
 
-This repo is preconfigured for Cloudflare Pages:
+Configured as a Worker with Static Assets (`wrangler.toml`):
 
-- Static site is served from `web/`.
-- `functions/api/ask.js` is the Pages Function → route `/api/ask` (it just
-  reuses the shared handler in `api/ask.js`).
-- `wrangler.toml` sets `pages_build_output_dir = "web"`.
+- `web/` is served as static assets via the `ASSETS` binding.
+- `worker/index.js` handles `POST /api/ask` (reusing the shared handler in
+  `api/ask.js`) and lets everything else fall through to the static site.
 
-**Option A — Dashboard (Git, auto-deploys on push):**
-1. Cloudflare dashboard → **Workers & Pages → Create → Pages → Connect to
-   Git**, pick `kiranmusu14/easy_python`.
-2. Build settings: **Framework preset = None**, **Build command = (empty)**,
-   **Build output directory = `web`**. Save & deploy.
-3. **Settings → Environment variables → add secret `GROQ_API_KEY`** (and
-   optionally `GROQ_MODEL`). Redeploy so the function picks it up.
+**Deploy (Git-connected build runs `npx wrangler deploy` automatically):**
+1. In Cloudflare, the project is connected to `kiranmusu14/easy_python`; each
+   push triggers `npx wrangler deploy`.
+2. Set the secret once so Ask-a-Doubt works:
+   `npx wrangler secret put GROQ_API_KEY` (or add it in the dashboard under
+   the Worker's **Settings → Variables and Secrets**). Optionally `GROQ_MODEL`.
 
-**Option B — CLI (Wrangler):**
+**Deploy from your machine instead:**
 ```bash
 npx wrangler login
-npx wrangler pages project create easy-python   # first time only
-npx wrangler pages secret put GROQ_API_KEY       # paste the key when prompted
-npx wrangler pages deploy                        # uses wrangler.toml (web/ + functions/)
+npx wrangler secret put GROQ_API_KEY
+npx wrangler deploy
 ```
+
+Validate config without deploying: `npx wrangler deploy --dry-run`.
 
 ### Other hosts
 

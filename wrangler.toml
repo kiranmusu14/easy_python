@@ -1,12 +1,16 @@
-# Cloudflare Pages configuration.
+# Cloudflare Workers configuration (Static Assets model).
 #
-# Static assets are served from web/. The functions/ directory at the repo
-# root is compiled automatically into Pages Functions (functions/api/ask.js
-# -> /api/ask), so no extra routing config is needed.
+# `wrangler deploy` uploads the Worker in worker/index.js together with the
+# static site in web/ (served via the ASSETS binding). The Worker handles
+# POST /api/ask and serves everything else as a static asset.
 #
-# Deploy from the CLI with:   npx wrangler pages deploy
-# (or connect this GitHub repo in the Cloudflare Pages dashboard).
+# Deploy:  npx wrangler deploy
+# Secret:  npx wrangler secret put GROQ_API_KEY   (or set it in the dashboard)
 
 name = "easy-python"
-pages_build_output_dir = "web"
+main = "worker/index.js"
 compatibility_date = "2024-11-01"
+
+[assets]
+directory = "./web"
+binding = "ASSETS"
